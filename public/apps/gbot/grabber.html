@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" rossorigin="anonymous"></script>
+  
+</head>
+<body>
+    1. Copy image data into clipboard or press Print Screen <br>
+    2. Press Ctrl+V (page/iframe must be focused):
+    <br /><br />
+    <canvas style="border:1px solid grey;" id="my_canvas" width="300" height="300"></canvas>
+    <input type="button" value="upload" onclick="imageUpload()">
+</body>
+
+<script type="text/javascript">
+    var dataURL;
+    var CLIPBOARD = new CLIPBOARD_CLASS("my_canvas", true);
+    //http://jsfiddle.net/KJW4E/905/
+    //https://stackoverflow.com/questions/13198131/how-to-save-an-html5-canvas-as-an-image-on-a-server
+    /**
+     * image pasting into canvas
+     * 
+     * @param {string} canvas_id - canvas id
+     * @param {boolean} autoresize - if canvas will be resized
+     */
+    function CLIPBOARD_CLASS(canvas_id, autoresize) {
+        var _self = this;
+        var canvas = document.getElementById(canvas_id);
+        var ctx = document.getElementById(canvas_id).getContext("2d");
+    
+        //handlers
+        document.addEventListener('paste', function (e) { _self.paste_auto(e); }, false);
+    
+        //on paste
+        this.paste_auto = function (e) {
+            if (e.clipboardData) {
+                var items = e.clipboardData.items;
+                if (!items) return;
+                
+                //access data directly
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].type.indexOf("image") !== -1) {
+                        //image
+                        var blob = items[i].getAsFile();
+                        var URLObj = window.URL || window.webkitURL;
+                        var source = URLObj.createObjectURL(blob);
+                        console.log(source);
+                        this.paste_createImage(source);
+                    }
+                }
+                e.preventDefault();
+            }
+        };
+        //draw pasted image to canvas
+        this.paste_createImage = function (source) {
+            var pastedImage = new Image();
+            pastedImage.onload = function () {
+                if(autoresize == true){
+                    //resize
+                    canvas.width = pastedImage.width;
+                    console.log('pastedImage.width:',pastedImage.width);
+                    canvas.height = pastedImage.height;
+                    console.log('pastedImage.height:',pastedImage.height);
+                }
+                else{
+                    //clear canvas
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+                ctx.drawImage(pastedImage, 0, 0);
+            };
+            pastedImage.src = source;
+        };
+    }
+
+    function imageUpload() { 
+        var canvas = document.getElementById('my_canvas');
+        $.ajax({
+            type: "POST",
+            url: "/resport",
+            data: { 
+                imgBase64: canvas.toDataURL('image/jpeg')
+            }
+        }).done(function(o) {
+            console.log('saved'); 
+            // If you want the file to be visible in the browser 
+            // - please modify the callback in javascript. All you
+            // need is to return the url to the file, you just saved 
+            // and than put the image in your browser.
+        });
+    }
+    </script>
+
+</html>

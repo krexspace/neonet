@@ -1,0 +1,303 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Network | Manipulation</title>
+
+  <style type="text/css">
+    body, select {
+      font: 10pt sans;
+    }
+    #mynetwork {
+      position:relative;
+      width: 800px;
+      height: 600px;
+      border: 1px solid lightgray;
+    }
+    table.legend_table {
+      font-size: 11px;
+      border-width:1px;
+      border-color:#d3d3d3;
+      border-style:solid;
+    }
+    table.legend_table,td {
+      border-width:1px;
+      border-color:#d3d3d3;
+      border-style:solid;
+      padding: 2px;
+    }
+    div.table_content {
+      width:80px;
+      text-align:center;
+    }
+    div.table_description {
+      width:100px;
+    }
+
+    #operation {
+      font-size:28px;
+    }
+    #network-popUp {
+      display:none;
+      position:absolute;
+      top:350px;
+      left:170px;
+      z-index:299;
+      width:250px;
+      height:120px;
+      background-color: #f9f9f9;
+      border-style:solid;
+      border-width:3px;
+      border-color: #5394ed;
+      padding:10px;
+      text-align: center;
+    }
+  </style>
+  <!-- script type="text/javascript" src="exampleUtil.js"></script -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis.min.css" rel="stylesheet" type="text/css" />
+
+  <script type="text/javascript">
+    var nodes = null;
+    var edges = null;
+    var network = null;
+    /*
+    // reference original
+    let gdata0 =  {
+  "nodes": [
+    {
+      "id": '0a',
+      "label": "0"
+    },
+    {
+      "id": '1a',
+      "label": "1"
+    },
+    {
+      "id": '2a',
+      "label": "2"
+    },
+    {
+      "id": '3a',
+      "label": "3"
+    }
+  ],
+  "edges": [
+    {
+      "from": '1a',
+      "to": '0a'
+    },
+    {
+      "from": '2a',
+      "to": '0a'
+    },
+    {
+      "from": '0a',
+      "to": '3a'
+    }
+  ]
+};
+*/
+    let gdata = {
+  "conns": [
+    {
+      "cid": 16,
+      "dest": "58f3cc5991fc3106fc18a49d",
+      "src": "58f3cc5391fc3106fc18a497",
+      "str": 75,
+      "type": "LIKE"
+    },
+    {
+      "cid": 11,
+      "dest": "58f3cc5491fc3106fc18a498",
+      "src": "58f3cc5391fc3106fc18a497",
+      "str": 90,
+      "type": "HARD"
+    },
+    {
+      "cid": 10,
+      "dest": "58f3cc5491fc3106fc18a498",
+      "src": "58f3cc5391fc3106fc18a497",
+      "str": 75,
+      "type": "LIKE"
+    },
+    {
+      "cid": 17,
+      "dest": "58f3cc5a91fc3106fc18a49e",
+      "src": "58f3cc5491fc3106fc18a498",
+      "str": 75,
+      "type": "LIKE"
+    },
+    {
+      "cid": 12,
+      "dest": "58f3cc5591fc3106fc18a499",
+      "src": "58f3cc5491fc3106fc18a498",
+      "str": 75,
+      "type": "LIKE"
+    },
+    {
+      "cid": 18,
+      "dest": "58f3cc5b91fc3106fc18a49f",
+      "src": "58f3cc5591fc3106fc18a499",
+      "str": 75,
+      "type": "LIKE"
+    },
+    {
+      "cid": 13,
+      "dest": "58f3cc5691fc3106fc18a49a",
+      "src": "58f3cc5591fc3106fc18a499",
+      "str": 75,
+      "type": "LIKE"
+    },
+    {
+      "cid": 19,
+      "dest": "58f3cc5c91fc3106fc18a4a0",
+      "src": "58f3cc5691fc3106fc18a49a",
+      "str": 75,
+      "type": "LIKE"
+    },
+    {
+      "cid": 14,
+      "dest": "58f3cc5791fc3106fc18a49b",
+      "src": "58f3cc5691fc3106fc18a49a",
+      "str": 75,
+      "type": "LIKE"
+    },
+    {
+      "cid": 15,
+      "dest": "58f3cc5891fc3106fc18a49c",
+      "src": "58f3cc5791fc3106fc18a49b",
+      "str": 75,
+      "type": "LIKE"
+    }
+  ],
+  "nodes": [
+    "58f3cc5491fc3106fc18a498",
+    "58f3cc5b91fc3106fc18a49f",
+    "58f3cc5991fc3106fc18a49d",
+    "58f3cc5791fc3106fc18a49b",
+    "58f3cc5a91fc3106fc18a49e",
+    "58f3cc5891fc3106fc18a49c",
+    "58f3cc5c91fc3106fc18a4a0",
+    "58f3cc5591fc3106fc18a499",
+    "58f3cc5691fc3106fc18a49a"
+  ]
+};
+
+  function transfromGraphData(input) {
+      let out_nodes = [];
+      let out_edges = [];
+      for(var node of input.nodes) {
+        out_nodes.push({id: node, label: node});
+      }
+      for(var conn of input.conns) {
+        out_edges.push({from: conn.src, to: conn.dest});
+      }
+      return {nodes:out_nodes, edges: out_edges};
+    }
+
+    // randomly create some nodes and edges
+    //var data = getScaleFreeNetwork(25);
+    console.log('data1', JSON.stringify(data, null, 2));
+    var data = transfromGraphData(gdata);
+    console.log('data2', JSON.stringify(data, null, 2));
+    var seed = 2;
+
+   function destroy() {
+      if (network !== null) {
+        network.destroy();
+        network = null;
+      }
+    }
+
+    function draw() {
+      destroy();
+      nodes = [];
+      edges = [];
+
+      // create a network
+      var container = document.getElementById('mynetwork');
+      var options = {
+        layout: {randomSeed:seed}, // just to make sure the layout is the same when the locale is changed
+        manipulation: {
+          addNode: function (data, callback) {
+            // filling in the popup DOM elements
+            document.getElementById('operation').innerHTML = "Add Node";
+            document.getElementById('node-id').value = data.id;
+            document.getElementById('node-label').value = data.label;
+            document.getElementById('saveButton').onclick = saveData.bind(this, data, callback);
+            document.getElementById('cancelButton').onclick = clearPopUp.bind();
+            document.getElementById('network-popUp').style.display = 'block';
+          },
+          editNode: function (data, callback) {
+            // filling in the popup DOM elements
+            document.getElementById('operation').innerHTML = "Edit Node";
+            document.getElementById('node-id').value = data.id;
+            document.getElementById('node-label').value = data.label;
+            document.getElementById('saveButton').onclick = saveData.bind(this, data, callback);
+            document.getElementById('cancelButton').onclick = cancelEdit.bind(this,callback);
+            document.getElementById('network-popUp').style.display = 'block';
+          },
+          addEdge: function (data, callback) {
+            if (data.from === data.to) {
+              var r = confirm("Do you want to connect the node to itself?");
+              if (r === true) {
+                callback(data);
+              }
+            }
+            else {
+              callback(data);
+            }
+          }
+        }
+      };
+      network = new vis.Network(container, data, options);
+    }
+
+    function clearPopUp() {
+      document.getElementById('saveButton').onclick = null;
+      document.getElementById('cancelButton').onclick = null;
+      document.getElementById('network-popUp').style.display = 'none';
+    }
+
+    function cancelEdit(callback) {
+      clearPopUp();
+      callback(null);
+    }
+
+    function saveData(data,callback) {
+      data.id = document.getElementById('node-id').value;
+      data.label = document.getElementById('node-label').value;
+      clearPopUp();
+      callback(data);
+    }
+
+    function init() {
+      //setDefaultLocale();
+      draw();
+    }
+
+  </script>
+  
+</head>
+
+<body onload="init();">
+<h2>Editable Grpah Demo</h2>
+<div id="network-popUp">
+    <span>NEW NODE</span><br>
+  <span id="operation">node</span> <br>
+  <table style="margin:auto;"><tr>
+    <td>id</td><td><input id="node-id" value="new value" /></td>
+  </tr>
+    <tr>
+      <td>label</td><td><input id="node-label" value="new value" /></td>
+    </tr></table>
+  <input type="button" value="save" id="saveButton" />
+  <input type="button" value="cancel" id="cancelButton" />
+</div>
+<br />
+<div id="mynetwork"></div>
+
+</body>
+</html>

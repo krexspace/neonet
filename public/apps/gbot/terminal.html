@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>GBOT terminal - TERANIX</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" rossorigin="anonymous"></script>
+    <script src="../../libs/jquery.gridster.min.js"></script>
+    <link href="../../libs/jquery.gridster.min.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis.min.js"></script>
+    
+    <script src="gbot_gen_utils.js"></script>
+    <script src="gbot_kernel.js"></script>
+    <script src="gbot_xpanes_api.js"></script>
+    <script src="gbot_gen_utils.js"></script>
+    
+    <script src="terminal.js"></script>
+    <link rel="stylesheet" href="terminal.css">
+</head>
+
+<body class="console_font demo_body">
+    <div>
+        <h1>GBOT terminal</h1>
+    </div>
+	<p><a href="terminal2.html" style="color: aqua">Terminal 2</a><p>
+    <span class="fine_print">Screen commands: cl for clear, cl h (history), cl r(results), cl c(console)</span> |
+    <span class="fine_print">Server commands: fn all(find all), mk node -title:Test -kwds:tech,hobby, fh tree -nid:58f3cc5391fc3106fc18a497, fn by -kwds:test8</span>
+    <div>
+        <div class="console_txt_01 cbox_command_view" id="cbox_command_view">
+        </div>
+        <input type="text" class="jut_txt" placeholder="" id="txt_command_in_p1" size="100">
+    </div>
+    <div class="gridster">
+        <ul>
+            
+            <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+                <textarea>mk node -title:Test -kwds:tech,hobby</textarea>
+            </li>
+            <!--
+            <li data-row="2" data-col="1" data-sizex="1" data-sizey="1">sdf</li>
+            <li data-row="3" data-col="1" data-sizex="1" data-sizey="1">sdf</li>
+
+            <li data-row="1" data-col="2" data-sizex="2" data-sizey="1">456</li>
+            <li data-row="2" data-col="2" data-sizex="2" data-sizey="2">sdgf</li>
+
+            <li data-row="1" data-col="4" data-sizex="1" data-sizey="1">gffd</li>
+            <li data-row="2" data-col="4" data-sizex="2" data-sizey="1">fgf</li>
+            <li data-row="3" data-col="4" data-sizex="1" data-sizey="1">sdfg</li>
+
+            <li data-row="1" data-col="5" data-sizex="1" data-sizey="1">sdfg</li>
+            <li data-row="3" data-col="5" data-sizex="1" data-sizey="1">456</li>
+
+            <li data-row="1" data-col="6" data-sizex="1" data-sizey="1">gsg</li>
+            <li data-row="2" data-col="6" data-sizex="1" data-sizey="2">gsdfg</li>
+            -->
+        </ul>
+    </div>
+    <div class="cbox_holder_a"></div>
+    <div class="notes_holder_a">
+        <ul>
+            <li>Most demanded feature: Plates - can hold one concept or "idealet", it could be a picture or a note snippet.
+                <li>Idea Filters - to filter the thoughts in the plate. Your mind will do the job. They can pop up or be on the
+                    side.
+        </ul>
+    </div>
+    <div class="notes_holder_a">
+        <ul>
+            <li>Make the screen interactions script driven. This will allow for powerful screen space automation later on.
+                <li>Keep it simple, as SIMPLE as possible. Or it will simply DIE off.
+        </ul>
+    </div>
+
+    <div id="network-popUp">
+          <span id="operation">node</span> <br>
+          <table style="margin:auto;"><tr>
+            <td>id</td><td><input id="node-id" value="new value" /></td>
+          </tr>
+            <tr>
+              <td>label</td><td><input id="node-label" value="new value" /></td>
+            </tr></table>
+          <input type="button" value="save" id="saveButton" />
+          <input type="button" value="cancel" id="cancelButton" />
+        </div>
+</body>
+
+</html>

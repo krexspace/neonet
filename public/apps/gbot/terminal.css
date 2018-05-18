@@ -1,0 +1,233 @@
+/* 
+    Created on : Aug 6, 2016, 8:15:42 PM
+    Author     : Galactica
+*/
+
+textarea {
+    background-color: #636253;
+}
+.console_font
+{
+font-weight:normal;color:#80340F;letter-spacing:1pt;word-spacing:2pt;font-size:14px;text-align:left;font-family:trebuchet MS, sans-serif;line-height:1;
+}
+
+/* GENERIC */
+.jut_textarea,.jut_txt,.jut_btn {
+    background-color: #232423;
+    border:1px solid #454545;
+    
+}
+.jut_btn {
+    color: gray;
+}
+
+.jut_txt,.jut_textarea {
+   color: gray;
+   outline: none;
+}
+.jut_txt {
+   height: 30px; 
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+.console_txt_01 {
+   color: #AA7010;
+}
+/* SPECIFIC */
+
+.pane_l1 {
+    width: 30%;
+    border:1px solid #353535;
+    color: #CE7421;
+    margin:5px;
+}
+.block_t1 {
+    border-bottom:1px solid #353735;
+    margin:5px;
+    padding:5px
+}
+
+  /*--gridster optional--*/
+  ul,
+  ol {
+      list-style: none;
+  }
+
+  .gridster {
+      /*width: 1400px;*/
+      margin: 0 auto;
+  }
+  /*--gridster recommended--*/
+
+  .gridster .gs-w {
+      background: #232322;
+      cursor: pointer;
+      -webkit-box-shadow: 0 0 5px rgba(46, 114, 106, 0.30);
+      box-shadow: 0 0 5px rgba(34, 118, 99, 0.30);
+  }
+
+  .gridster .player {
+      -webkit-box-shadow: 3px 3px 5px rgba(38, 111, 88, 0.30);
+      box-shadow: 3px 3px 5px rgba(28, 119, 101, 0.30);
+  }
+
+
+  .gridster .gs-w.try {
+      background-image: url(../img/sprite.png);
+      background-repeat: no-repeat;
+      background-position: 37px -169px;
+  }
+
+  .gridster .preview-holder {
+      border: none!important;
+      border-radius: 0!important;
+      background: rgba(255, 255, 255, .2)!important;
+  }
+  /*--end gridster*/
+
+  .demo_body {
+      margin: 5px;
+      padding: 7.5em 0 5.5em;
+      background: #292b2b;
+  }
+
+  select {
+      font: 10pt sans;
+  }
+
+  .notes_holder_a {
+      font-size: 10px;
+      color: #A95F1D;
+  }
+
+  h1 {
+      color: #999999
+  }
+
+  #mynetwork {
+      position: relative;
+      width: 800px;
+      height: 600px;
+      border: 1px solid #313131;
+  }
+
+  .fine_print {
+      font-size: 8px;
+      color: #99ffcc
+  }
+
+  table.legend_table {
+      font-size: 11px;
+      border-width: 1px;
+      border-color: #d3d3d3;
+      border-style: solid;
+  }
+
+  table.legend_table,
+  td {
+      border-width: 1px;
+      border-color: #d3d3d3;
+      border-style: solid;
+      padding: 2px;
+  }
+
+  div.table_content {
+      width: 80px;
+      text-align: center;
+  }
+
+  div.table_description {
+      width: 100px;
+  }
+
+  #operation {
+      font-size: 28px;
+  }
+
+  #node-popUp {
+      display: none;
+      position: absolute;
+      top: 350px;
+      left: 170px;
+      z-index: 299;
+      width: 250px;
+      height: 120px;
+      background-color: #f9f9f9;
+      border-style: solid;
+      border-width: 3px;
+      border-color: #67963E;
+      padding: 10px;
+      text-align: center;
+  }
+
+  #edge-popUp {
+      display: none;
+      position: absolute;
+      top: 350px;
+      left: 170px;
+      z-index: 299;
+      width: 250px;
+      height: 90px;
+      background-color: #f9f9f9;
+      border-style: solid;
+      border-width: 3px;
+      border-color: #5394ed;
+      padding: 10px;
+      text-align: center;
+  }
+/* Graph helper*/
+    .g_outer {
+        /*padding: 10px ;*/
+        text-align:center;
+    }
+    .g_inner {
+        margin: 10px;
+        height: 98%;
+        border: 1px solid #292917;
+    }
+
+  /*-------------VIZ GRAPH --------------*/
+  #mynetwork {
+    position:relative;
+    width: 800px;
+    height: 600px;
+    border: 1px solid #200B0B;
+  }
+  table.legend_table {
+    font-size: 11px;
+    border-width:1px;
+    border-color:#d3d3d3;
+    border-style:solid;
+  }
+  table.legend_table,td {
+    border-width:1px;
+    border-color:#d3d3d3;
+    border-style:solid;
+    padding: 2px;
+  }
+  div.table_content {
+    width:80px;
+    text-align:center;
+  }
+  div.table_description {
+    width:100px;
+  }
+
+  #operation {
+    font-size:28px;
+  }
+  #network-popUp {
+    display:none;
+    position:absolute;
+    top:350px;
+    left:170px;
+    z-index:299;
+    width:250px;
+    height:120px;
+    background-color: #f9f9f9;
+    border-style:solid;
+    border-width:3px;
+    border-color: #A49987;
+    padding:10px;
+    text-align: center;
+  }

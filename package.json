@@ -1,0 +1,28 @@
+{
+  "name": "Juanix",
+  "version": "0.1.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./server.js"
+  },
+  "dependencies": {
+    "async": "x",
+    "body-parser": "x",
+    "bower": "x",
+    "btoa": "x",
+    "colors": "x",
+    "cookie-parser": "x",
+    "cookie-signature": "x",
+    "debug": "x",
+    "express": "x",
+    "http-proxy": "x",
+    "log4js": "x",
+    "mime": "x",
+    "morgan": "x",
+    "npm": "^6.0.1",
+    "q": "x",
+    "request": "x",
+    "serve-favicon": "x"
+  },
+  "devDependencies": {}
+}
