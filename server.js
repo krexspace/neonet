@@ -66,8 +66,9 @@ function setupServer() {
         let base64String = req.body.imgBase64; // Not a real image
         // Remove header
         let base64Image = base64String.split(';base64,').pop();
-        fs.writeFile(new Date().getTime()+'_image002.jpg', base64Image, {encoding: 'base64'}, function(err) {
-            console.log('File created');
+        let fname = 'public/stagearea/' + new Date().getTime() + '_image001.' + req.body.img_ext;
+        fs.writeFile(fname, base64Image, {encoding: 'base64'}, function(err) {
+            console.log('File created:', fname);
         });
     });
 
@@ -94,5 +95,5 @@ setupServer();
 var httpsServer = https.createServer(credentials, app);
 
 httpsServer.listen(process.env.PORT || 3553, function () {
-    logger.info('Juanix Server listening on port ' + httpsServer.address().port);
+    logger.info('NEONET Server listening on port ' + httpsServer.address().port);
 });

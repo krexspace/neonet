@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" rossorigin="anonymous"></script>
-  
+<link href="https://bootswatch.com/3/slate/bootstrap.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="terminal2.css">
+<title>Grabber</title>
 </head>
 <body>
-    1. Copy image data into clipboard or press Print Screen <br>
-    2. Press Ctrl+V (page/iframe must be focused):
-    <br /><br />
-    <canvas style="border:1px solid grey;" id="my_canvas" width="300" height="300"></canvas>
-    <input type="button" value="upload" onclick="imageUpload()">
+    <input type="button" value="upload" onclick="imageUpload()"> Save as PNG:<input type="checkbox" id='ctl_img_format'>
+    <br>
+    <canvas style="border:1px solid black;" id="my_canvas" width="300" height="300"></canvas>
 </body>
-
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 <script type="text/javascript">
     var dataURL;
     var CLIPBOARD = new CLIPBOARD_CLASS("my_canvas", true);
@@ -44,7 +44,6 @@
                         var blob = items[i].getAsFile();
                         var URLObj = window.URL || window.webkitURL;
                         var source = URLObj.createObjectURL(blob);
-                        console.log(source);
                         this.paste_createImage(source);
                     }
                 }
@@ -58,9 +57,8 @@
                 if(autoresize == true){
                     //resize
                     canvas.width = pastedImage.width;
-                    console.log('pastedImage.width:',pastedImage.width);
                     canvas.height = pastedImage.height;
-                    console.log('pastedImage.height:',pastedImage.height);
+                    console.log('pastedImage size:',pastedImage.width,' x ',pastedImage.height);
                 }
                 else{
                     //clear canvas
@@ -74,11 +72,24 @@
 
     function imageUpload() { 
         var canvas = document.getElementById('my_canvas');
+
+        let img_data;
+        let img_ext;
+        //alert($('#ctl_img_format').val());
+        if($('#ctl_img_format').is(":checked")) {
+            img_data =  canvas.toDataURL(); // default is image/png
+            img_ext = 'png';
+        } else {
+            img_data =  canvas.toDataURL('image/jpeg'); 
+            img_ext = 'jpg';
+        }
+        console.log(img_ext);
         $.ajax({
             type: "POST",
             url: "/resport",
-            data: { 
-                imgBase64: canvas.toDataURL('image/jpeg')
+            data: {
+                img_ext: img_ext,
+                imgBase64: img_data
             }
         }).done(function(o) {
             console.log('saved'); 
