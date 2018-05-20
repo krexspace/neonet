@@ -6,7 +6,6 @@
     "start": "node ./server.js"
   },
   "dependencies": {
-    "async": "x",
     "body-parser": "x",
     "bower": "x",
     "btoa": "x",
@@ -19,7 +18,6 @@
     "log4js": "x",
     "mime": "x",
     "morgan": "x",
-    "npm": "^6.0.1",
     "q": "x",
     "request": "x",
     "serve-favicon": "x"
