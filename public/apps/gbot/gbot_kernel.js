@@ -5,21 +5,9 @@ Its architecture is based on protocols, commands, command buses and ports
 ----------------------------------------------------------------------*/
 
 var gkernel = {};
-gkernel.init = function() {
-    // INIT COMMAND TEXTBOX
-    $('#txt_command_in_p1').focus();
-    gu_enableKeyboardSupport('#txt_command_in_p1', gkernel.on_terminalCommandEntered);
-}
-
-gkernel.on_terminalCommandEntered = function(jq_elem, val) {
-    l.debug('[on_terminalCommandEntered]', val);
-    gkernel.mirror_commands_toTerminal(val);
-    if(jq_elem) jq_elem.val('');
-    gkernel.pushTo_COMMBUS_DHUB(val);
-}
 
 // mirror commands to command view box on enter or exec
-gkernel.mirror_commands_toTerminal = function(txt) {
+gkernel.mirror_commands_toTerminal = (txt)=>{
     var COMMAND_BUF_MAX = 10;
     $('#cbox_command_view').append($('<div class="cmd_line"></div>').text(txt));
     if($('#cbox_command_view').children().length > COMMAND_BUF_MAX) {
@@ -27,119 +15,34 @@ gkernel.mirror_commands_toTerminal = function(txt) {
     }
 }
 
-//sdf adsfd -kw:fasd,sdf,asdf,asdf -desc:sdgf  sdgfdghggg sdfs
-gkernel.parseCommandString = function(str) {
-    var cur_key;
-    var state = 0;
-    var cmd = [];
-
-    if(str.endsWith('$') || str.endsWith('`')) {
-
-    }
-    // Defaults to '-' else can use ` or $ if command is terminated with that char
-    const CMD_KEY_CHAR = str.endsWith('$') || str.endsWith('`')?str.slice(-1):'-';
-    var dash_pos = str.indexOf(CMD_KEY_CHAR);
-    
-    // parse the words before the first dash
-    // no white spaces allowed in words
-    var parseCmdHead = function(str_1) {
-         var arr = str_1.split(' ');
-        //l.out(arr);
-        var j = 0;
-        for(var i in arr) {
-            // Empty strings and command sep chars are ignored
-            if(arr[i] != '' && arr[i] != '`' && arr[i] != '$' && arr[i] != '-') {
-                cmd[j++] = arr[i];
-            }
-        }
-        //l.out(cmd);
-    };
-    //var c_buf = [];
-    var extractNextPair = function(s) {
-        var colon_pos = s.indexOf(':');
-        var key = s.substring(1,colon_pos);
-        //l.out(key);
-        var colon_pos = s.indexOf(':');
-        var next_dash_pos = s.indexOf(CMD_KEY_CHAR,2);
-        //l.out(next_dash_pos, colon_pos);
-        if(next_dash_pos < 0) {
-            var value = s.substring(colon_pos + 1);
-            
-            var attr = {};
-            attr[key] = value;
-            //l.out(attr);
-            cmd.push(attr);
-            
-            // stop extraction, no further attrs
-        } else {
-            var value = s.substring(colon_pos + 1, next_dash_pos-1);
-            var attr = {};
-            attr[key] = value;
-            cmd.push(attr);
-            var s2 = s.substring(next_dash_pos);
-            
-            // continue extraction recursively
-            extractNextPair(s2);
-        }
-    };
-    // parse the string after the first dash
-    // Expects key value pairs.
-    var parseCmdTail = function(str_1) {
-        //l.out(str_1);
-        extractNextPair(str_1);
-    };
-    if(dash_pos < 0) {
-        // now attribs, simple command, just split by spaces
-       parseCmdHead(str);
-    } else {
-       var head = str.substring(0,dash_pos-1);
-       parseCmdHead(head);
-       parseCmdTail(str.substring(dash_pos));
-    }
-
-    return cmd;
-}
-
 // ======================================
 //      MAIN BUS and PORT METHODS
 // ======================================
-gkernel.pushTo_COMMBUS_DHUB = function(payload) {
-    l.trace("[COMMBUS_DHUB]", "dispatch hub received command:", payload); 
+gkernel.pushTo_COMM_BUS_CENTRAL = (payload)=>{
+    l.trace("[COMM_BUS_CENTRA]", "dispatch hub received command:", payload); 
     gkernel.addToCommandHistory(payload);
     
-    var cmd = gkernel.parseCommandString(payload);
-    var fe_cmd = gkernel.pushTo_COMMBUS_SCREEN(cmd);
+    var cmd = payload;
+    //var fe_cmd = gkernel.pushTo_COMMBUS_SCREEN(cmd);
     // Not a local command, send to remote bus
-    if(!fe_cmd) {
-        gkernel.pushTo_COMMBUS_REMOTEMAIN(cmd);
-    }
+    //if(!fe_cmd) {
+    gkernel.pushTo_COMMBUS_REMOTE_TRANS(cmd);
+    //}
 }
 
-gkernel.pushTo_COMMBUS_REMOTEMAIN = function(cmd) {
-    l.trace("[COMMBUS_REMOTEMAIN]", "remote cmd:", cmd); 
+gkernel.pushTo_COMMBUS_REMOTE_TRANS = (cmd)=>{
+    l.trace("[COMMBUS_REMOTE_TRANS]", "remote cmd:", cmd); 
     gkernel.transmitRemoteCommand(cmd, function(resp) {
-        gkernel.pushTo_COMMBUS_RECVHUB(cmd, resp);
+        gkernel.pushTo_COMM_BUS_REMOTE_RECEIVE(cmd, resp);
     });
 }
 
 // Display ports are initiated here
-gkernel.pushTo_COMMBUS_RECVHUB = function(cmd, resp) {
-    l.trace("[COMMBUS_RECVHUB] received resp:", resp);
-
-    // Check response structure and determine type
-    if(resp.err && resp.err === true) {
-        xpanes.pushTo_XPBUS_RECVHUB(resp.msg,'err');
-        return;
-    }
-    if(resp.list && Array.isArray(resp.list))
-        xpanes.pushTo_XPBUS_RECVHUB(resp.list, 'list');
-    if(resp.obj)
-        xpanes.pushTo_XPBUS_RECVHUB(resp.obj,'json');
-    if(resp.val)
-        xpanes.pushTo_XPBUS_RECVHUB(resp.val,'str');
+gkernel.pushTo_COMM_BUS_REMOTE_RECEIVE = (cmd, resp)=>{
+    l.trace("[COMM_BUS_REMOTE_RECEIVE] received resp:", resp);
 }
 
-gkernel.pushTo_COMMBUS_SCREEN = function(cmd) {
+gkernel.pushTo_COMMBUS_SCREEN = (cmd)=>{
     const LOG_TRACER_ID = '[COMMBUS_SCREEN]';
   
     var head  = cmd[0];
@@ -221,12 +124,12 @@ gkernel.fetchNextCommand = function() {
 //              COMMAND IO                   
 //=============================================
 gkernel.transmitRemoteCommand = function(cmd, cb) {
-    l.trace("[transmitRemoteCommand]","Transmitting..", cmd);
+   l.trace("[transmitRemoteCommand]","Transmitting..", cmd);
 
-   var dataPayload = {data: cmd, sid: 534545}
+   var dataPayload = cmd;
    $.ajax({
            type: "post",
-           url: "/graph",
+           url: "/thea_api",
            dataType: 'json',
            data: JSON.stringify(dataPayload),
            contentType:'application/json;charset=UTF-8',
@@ -239,7 +142,7 @@ gkernel.transmitRemoteCommand = function(cmd, cb) {
            },
            strictSSL:false,
            error: function(XMLHttpRequest, textStatus, errorThrown) {
-            l.out("Error calling graph server: " + JSON.stringify(XMLHttpRequest));
+            l.out("Error calling Thea server: " + JSON.stringify(XMLHttpRequest));
            }
        });
 }

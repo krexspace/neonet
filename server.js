@@ -38,11 +38,11 @@ function setupServer() {
     // --------------------------------------------------------
     // URL Mapping
     // --------------------------------------------------------
-    app.post('/graph', function (req, res) {
+    app.post('/thea_api', function (req, res) {
         logger.info('Received request:', req.body);
         // Call the python command bus
         request({
-            url: 'https://localhost:3737/cbus', //URL to hit
+            url: 'https://localhost:3737/kbus', //URL to hit
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
