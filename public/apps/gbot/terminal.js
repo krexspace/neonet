@@ -11,7 +11,7 @@ mplate_a.exec = (payload)=>{
 }
 
 mplate_a.processResults = (cmd, resp) => {
-    let data = JSON.stringify(resp.data, null, 2);
+    let data = JSON.stringify(resp.data?resp.data:resp, null, 2);
     var item = $('<pre></pre>').html(data);
     
     let target = $('#cbox_result_view');
