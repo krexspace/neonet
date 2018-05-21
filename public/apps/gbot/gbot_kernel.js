@@ -32,7 +32,7 @@ gkernel.pushTo_COMM_BUS_CENTRAL = (payload)=>{
 
 gkernel.pushTo_COMMBUS_REMOTE_TRANS = (cmd)=>{
     l.trace("[COMMBUS_REMOTE_TRANS]", "remote cmd:", cmd); 
-    gkernel.transmitRemoteCommand(cmd, function(resp) {
+    gkernel.fireRemoteCommand(cmd, function(resp) {
         gkernel.pushTo_COMM_BUS_REMOTE_RECEIVE(cmd, resp);
     });
 }
@@ -40,6 +40,8 @@ gkernel.pushTo_COMMBUS_REMOTE_TRANS = (cmd)=>{
 // Display ports are initiated here
 gkernel.pushTo_COMM_BUS_REMOTE_RECEIVE = (cmd, resp)=>{
     l.trace("[COMM_BUS_REMOTE_RECEIVE] received resp:", resp);
+    // TODO make generic
+    mplate_a.processResults(cmd, resp);
 }
 
 gkernel.pushTo_COMMBUS_SCREEN = (cmd)=>{
@@ -123,8 +125,8 @@ gkernel.fetchNextCommand = function() {
 //=============================================
 //              COMMAND IO                   
 //=============================================
-gkernel.transmitRemoteCommand = function(cmd, cb) {
-   l.trace("[transmitRemoteCommand]","Transmitting..", cmd);
+gkernel.fireRemoteCommand = function(cmd, cb) {
+   l.trace("[fireRemoteCommand]","Transmitting..", cmd);
 
    var dataPayload = cmd;
    $.ajax({

@@ -7,17 +7,47 @@
 <!-- Bootstrap CSS -->
 <!-- link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" -->
 <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css" crossorigin="anonymous">
-<title>NEONET</title>
+<title>[NEONET]</title>
 </head>
 <body>
-<div class="container-fluid">
-  <div class="navbar-header">NEONET</div>
-    <div class="form-group">
-      <label for="ctl_textarea_code">Comand Interface</label>
-      <textarea class="form-control" id="ctl_command_input" rows="6"></textarea>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <div class="form-group">
+      <span class="badge badge-pill badge-dark">Command Terminal</span>
+      <textarea class="form-control" id="ctl_command_input" rows="6">resp ['data'] = g.list(g.f())</textarea>
     </div>
     <button type="button" class="btn btn-dark" onclick="mplate_a.onClickExec()">EXEC</button>
+    </div>
+    <div class="col-sm">
+        <pre style='color: aquamarine'>
+      .__________________________.
+      | .___________________. |==|
+      | | ................. | |  |
+      | | ::[ neonet ]::::: | |  |
+      | | ::::::::::::::::: | |  |
+      | | : thought server  | |  |
+      | | ::::::::::::::::: | | ,|
+      | !___________________! |(c|
+      !_______________________!__!
+     /                            \
+    /  [][][][][][][][][][][][][]  \
+   /  [][][][][][][][][][][][][][]  \
+  (  [][][][][____________][][][][]  )
+   \ ------------------------------ /
+    \______________________________/
+    </pre>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+          <div class="well well-lg">
+          <span class="badge badge-pill badge-dark">results</span>
+          <div class="cbox_result_view" id="cbox_result_view"></div>
+        </div>
+      </div>
   </div>
+</div>
 <!-- Optional JavaScript --> 
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
