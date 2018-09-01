@@ -3,3 +3,4 @@ bower_components/
 stagearea/
 npm-debug.log
 *.pyc
+.vs/

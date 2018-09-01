@@ -6,11 +6,18 @@ mplate_a.onClickExec = ()=>{
     mplate_a.exec(payload);
 }
 
-mplate_a.exec = (payload)=>{
-    gkernel.pushTo_COMM_BUS_CENTRAL(payload);
+mplate_a.onClickClear = ()=>{
+    let target = $('#cbox_result_view');
+    target.empty();
 }
 
-mplate_a.processResults = (cmd, resp) => {
+//--
+
+mplate_a.exec = (payload)=>{
+    gkernel.pushTo_COMM_BUS_CENTRAL(payload, mplate_a.processResults);
+}
+
+mplate_a.processResults = (err, cmd, resp) => {
     let data = JSON.stringify(resp.data?resp.data:resp, null, 2);
     var item = $('<pre></pre>').html(data);
     

@@ -18,7 +18,7 @@ gkernel.mirror_commands_toTerminal = (txt)=>{
 // ======================================
 //      MAIN BUS and PORT METHODS
 // ======================================
-gkernel.pushTo_COMM_BUS_CENTRAL = (payload)=>{
+gkernel.pushTo_COMM_BUS_CENTRAL = (payload, cb_lev_1)=>{
     l.trace("[COMM_BUS_CENTRA]", "dispatch hub received command:", payload); 
     gkernel.addToCommandHistory(payload);
     
@@ -26,22 +26,22 @@ gkernel.pushTo_COMM_BUS_CENTRAL = (payload)=>{
     //var fe_cmd = gkernel.pushTo_COMMBUS_SCREEN(cmd);
     // Not a local command, send to remote bus
     //if(!fe_cmd) {
-    gkernel.pushTo_COMMBUS_REMOTE_TRANS(cmd);
+    gkernel.pushTo_COMMBUS_REMOTE_TRANS(cmd, cb_lev_1);
     //}
 }
 
-gkernel.pushTo_COMMBUS_REMOTE_TRANS = (cmd)=>{
+gkernel.pushTo_COMMBUS_REMOTE_TRANS = (cmd, cb_lev_1)=>{
     l.trace("[COMMBUS_REMOTE_TRANS]", "remote cmd:", cmd); 
     gkernel.fireRemoteCommand(cmd, function(resp) {
-        gkernel.pushTo_COMM_BUS_REMOTE_RECEIVE(cmd, resp);
+        gkernel.pushTo_COMM_BUS_REMOTE_RECEIVE(cmd, resp, cb_lev_1);
     });
 }
 
 // Display ports are initiated here
-gkernel.pushTo_COMM_BUS_REMOTE_RECEIVE = (cmd, resp)=>{
+gkernel.pushTo_COMM_BUS_REMOTE_RECEIVE = (cmd, resp, cb_lev_1)=>{
     l.trace("[COMM_BUS_REMOTE_RECEIVE] received resp:", resp);
-    // TODO make generic
-    mplate_a.processResults(cmd, resp);
+    cb_lev_1(null, cmd, resp);
+    //mplate_a.processResults(cmd, resp);
 }
 
 gkernel.pushTo_COMMBUS_SCREEN = (cmd)=>{

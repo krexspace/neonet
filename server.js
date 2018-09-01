@@ -68,7 +68,11 @@ function setupServer() {
         let base64Image = base64String.split(';base64,').pop();
         let fname = 'public/stagearea/' + new Date().getTime() + '_image001.' + req.body.img_ext;
         fs.writeFile(fname, base64Image, {encoding: 'base64'}, function(err) {
-            console.log('File created:', fname);
+            if(err) {
+                console.log('Error creating file at :', fname);
+            } else {
+                console.log('File created:', fname);
+            }
         });
     });
 
